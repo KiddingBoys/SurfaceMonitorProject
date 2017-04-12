@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SurfaceProject_wjj</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="real_traffic_display">Real resolution</string>
+    <string name="rise_resolution">Low video resolution, please rise the traffic setting</string>
+</resources>
