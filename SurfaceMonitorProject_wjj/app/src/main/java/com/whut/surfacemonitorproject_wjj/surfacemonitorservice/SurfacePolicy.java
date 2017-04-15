@@ -164,27 +164,29 @@ public class SurfacePolicy {
 	public void invokSurfaceDumpPerSec(String name) {
 		if (TextUtils.isEmpty(name)) return;
 		ApplicationInfo ai = null;
-		int pid = -1;
-		try {
-			ai = mPM.getApplicationInfo(name, PackageManager.GET_ACTIVITIES);
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		int pid = -1;
+//		try {
+//			ai = mPM.getApplicationInfo(name, PackageManager.GET_ACTIVITIES);
+//		} catch (NameNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//		ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+//		List<ActivityManager.RunningAppProcessInfo> appProcessList = mActivityManager.getRunningAppProcesses();
+//		for (ActivityManager.RunningAppProcessInfo appProcess : appProcessList) {
+//			String processName = appProcess.processName;
+//			if (name.equals(processName)) {
+//				pid = appProcess.pid;
+//				break;
+//			}
+//		}
 
-		ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-		List<ActivityManager.RunningAppProcessInfo> appProcessList = mActivityManager.getRunningAppProcesses();
-		for (ActivityManager.RunningAppProcessInfo appProcess : appProcessList) {
-			String processName = appProcess.processName;
-			if (name.equals(processName)) {
-				pid = appProcess.pid;
-				break;
-			}
-		}
-
-		if (ai != null) {
-			long cpuTime = Utils.getTotalCpuTime();
-			long appTime = Utils.getAppCpuTime(pid);
+//		if (ai != null) {
+//			long cpuTime = Utils.getTotalCpuTime();
+//			long appTime = Utils.getAppCpuTime(pid);
+			long cpuTime = 500;
+			long appTime = 300;
 
 			String out = "";
 			if (Utils.isYoukuApp(name))           out = mYoukuPolicy.invokSurfaceDump();
@@ -203,7 +205,7 @@ public class SurfacePolicy {
 
 			mCPUTotalTime = cpuTime;
 			mAPPTotalTime = appTime;
-		}
+//		}
 	}
 
 	public void resetAllPolicy() {
