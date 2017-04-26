@@ -3,7 +3,7 @@
     package="com.whut.surfaceproject_wjj"
     android:versionCode="1"
     android:versionName="1.0"
-    android:sharedUserId="android.uid.system">
+    >
     <!--android:sharedUserId="android.uid.system"-->
     <uses-permission android:name="android.permission.DUMP"/>
     <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER"/>
@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<!-- 允许挂载和反挂载文件系统可移动存储( -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -22,6 +23,7 @@
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"/>
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<!-- 允许一个程序修改当前设置，如本地化 -->
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -29,6 +31,7 @@
     <!-- <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>-->
     <uses-permission android:name="android.permission.READ_LOGS" />
 
+	<!-- 考虑安全，不允许数据备份 -->
     <application android:allowBackup="false">
 
         <activity
