@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,6 +52,7 @@ public class Utils {
 
 	/**
 	 * 根据应用的pid得到应用的CPU耗时
+	 * PID 指进程ID. PID是进程的身份标识
 	 * @param pid
 	 * @return
 	 */
@@ -64,8 +67,8 @@ public class Utils {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		if (cpuInfos.length == 0) {
-			Log.e("", "cpuInfos is null, return 0");
+		if (cpuInfos == null || cpuInfos.length == 0) {
+			Log.e(TAG, "cpuInfos is null | 0, return 0");
 			return 0L;
 		}
 		long appCpuTime = Long.parseLong(cpuInfos[13])
@@ -138,6 +141,15 @@ public class Utils {
 
 	public static String getSufaceFlinger(String cmd) {
 	    try {
+			//使应用获取root权限
+//			if(!isRootApplication){
+//				if(upgradeRootPermission(mContext.getPackageCodePath())){
+//					isRootApplication = true;
+//					if(MyConstants.DEBUG){
+//						Log.d("WJJ_TAG", "upgradeRootPermission is OK");
+//					}
+//				}
+//			}
 	    	Process proc = Runtime.getRuntime().exec(cmd);
 	    	BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 	    	String line = "";
@@ -172,7 +184,35 @@ public class Utils {
 	    	return null;
 	    }
     }
-	
+
+	/**
+	 * 读取surfaceFlinger文件分析出分辨率信息
+	 * @return
+     */
+	public static String getSurfaceFlingerByFile(String filePath){
+		try {
+			String encoding = "GBK";
+			File file = new File(filePath);
+			if (file.isFile() && file.exists()) { // 判断文件是否存在
+				InputStreamReader read = new InputStreamReader(
+						new FileInputStream(file), encoding);// 考虑到编码格式
+				BufferedReader bufferedReader = new BufferedReader(read);
+				String lineTxt = null;
+				while ((lineTxt = bufferedReader.readLine()) != null) {
+//					if (!needVersion || versionKey.equals(lineTxt.substring(0,versionKey.length()))) {
+				}
+				read.close();
+				return "";
+			} else {
+				System.out.println("找不到指定的文件");
+			}
+		} catch (Exception e) {
+			System.out.println("读取文件内容出错");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private static double n1 = 0.0;
 	private static double n2 = 0.0;
 	public static boolean resIsChange(double a1, double a2) {
@@ -431,22 +471,39 @@ public class Utils {
     }
 
 
-	public void judgeInstalledPackage(){
-//		String[] illegalPackageNames = new String[] { "com.qihoo360.mobilesafe", "com.qihoo.antivirus",
-//				"com.qihoo.security", "com.qihoo.appstore", "com.cleanmaster.security", "com.cleanmaster.mguard",
-//				"com.cleanmaster.mguard_cn",
-//				"com.wandoujia.phoenix2", // 豌豆荚
-//				"com.tencent.android.qqdownloader", // QQ应用宝
-//				"com.ksmobile.launcher", "com.cm.launcher" };
-//
-//		for (String packageName : illegalPackageNames) {
-//			if (PackageUtil.isInstalled(this, packageName)) {
-//				// 故意构造一个崩溃，禁止屏蔽
-//				throw new OutOfMemoryError("Illegal package[" + packageName + "] detected!");
-//			}
-//		}
 
-		//List<PackageInfo> listPack = mPM.getInstalledPackages(PackageManager.GET_ACTIVITIES);
-		//获取已经安装的应用
+	/*******************************************************************/
+	/** start 供本类调用*/
+	/*******************************************************************/
+
+	/**
+	 * 使应用获取root权限
+	 * @param pkgCodePath
+	 * @return
+	 */
+	private static boolean isRootApplication = false;
+	private static boolean upgradeRootPermission(String pkgCodePath) {
+		Process process = null;
+		DataOutputStream os = null;
+		try {
+			String cmd = "chmod 777 " + pkgCodePath;
+			process = Runtime.getRuntime().exec("su"); // 切换到root帐号
+			os = new DataOutputStream(process.getOutputStream());
+			os.writeBytes(cmd + "\n");
+			os.writeBytes("exit\n");
+			os.flush();
+			process.waitFor();
+		} catch (Exception e) {
+			return false;
+		} finally {
+			try {
+				if (os != null) {
+					os.close();
+				}
+				process.destroy();
+			} catch (Exception e) {
+			}
+		}
+		return true;
 	}
 }

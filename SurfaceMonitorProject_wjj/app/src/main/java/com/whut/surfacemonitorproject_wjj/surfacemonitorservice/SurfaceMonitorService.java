@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Service;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.whut.surfacemonitorproject_wjj.utils.MyConstants;
 import com.whut.surfaceproject_wjj.R;
 
 import java.util.List;
@@ -53,6 +56,9 @@ public class SurfaceMonitorService extends Service {
 			case MSG_DISPLAY_SURFACE:
 //				String tempName = checkAppName();
 				String tempName = "com.qiyi.video";
+				if (MyConstants.DEBUG) {
+					Log.d(TAG, "handleMessage: tempName = " + tempName);
+				}
 				if (!TextUtils.isEmpty(tempName)) {
 					mSurfacePolicy.invokSurfaceDumpPerSec(tempName);
 				}
@@ -108,8 +114,8 @@ public class SurfaceMonitorService extends Service {
 			@Override
 			public double onSurfaceValuePerSecond(String value) {
 				// TODO Auto-generated method stub
-			    mTextView.setText(getResources().getString(R.string.real_traffic_display) + " : " + value);// +
-			    mTextView.setTextColor(0xff000000);
+			    mTextView.setText(getResources().getString(R.string.real_traffic_display) + " : \n" + value);
+			    mTextView.setTextColor(0xffffffff);
 				return 0;
 			}
 		});
@@ -187,7 +193,7 @@ public class SurfaceMonitorService extends Service {
 //        	else if (retry == 0) time = ts - 20000000;
 //	        queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time, ts);
 //	        if (queryUsageStats == null || queryUsageStats.isEmpty()) {
-//	        	Log.e(TAG, "pk !!!!!!! retrytime : " + retry);
+//	        	Log.e(TAG, "retrytime : " + retry);
 //	        	continue;
 //	        } else {
 //	        	break;
@@ -214,7 +220,7 @@ public class SurfaceMonitorService extends Service {
 		ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> appProcessList = mActivityManager
                 .getRunningAppProcesses();  
-  
+
         for (RunningAppProcessInfo appProcess : appProcessList) {
             int pid = appProcess.pid;  
             String processName = appProcess.processName;

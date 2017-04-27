@@ -55,9 +55,9 @@ public class IQIYIPolicy extends PlayerPolicy {
 		if (out != null) {
 			String[] res = out.split("x");
 			if (Utils.resIsChange(Double.parseDouble(res[0]), Double.parseDouble(res[1]))) {
-				resetAll();
+				resetAll();//分辨率发生变化则重置提示的倒计时
 			}
-			double minRes = Math.min(Double.parseDouble(res[0]), Double.parseDouble(res[1]));
+			double minRes = Math.min(Double.parseDouble(res[0]), Double.parseDouble(res[1]));//取最小的分辨率垂直像素
 			if (mIsAllowToast && minRes <= IQIYI_VIDEO_RESOLUTION_THREDHOLD) {
 				// video height is smaller than 600 in IQIYI, will toast
 				if (!mEventHandler.hasMessages(MSG_SURFACE_LOWRES) && score >= IQIYI_WIFI_THREDHOLD

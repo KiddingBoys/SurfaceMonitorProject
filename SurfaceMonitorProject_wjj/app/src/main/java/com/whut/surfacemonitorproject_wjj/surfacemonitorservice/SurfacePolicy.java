@@ -164,7 +164,7 @@ public class SurfacePolicy {
 	public void invokSurfaceDumpPerSec(String name) {
 		if (TextUtils.isEmpty(name)) return;
 		ApplicationInfo ai = null;
-//		int pid = -1;
+		int pid = -1;
 //		try {
 //			ai = mPM.getApplicationInfo(name, PackageManager.GET_ACTIVITIES);
 //		} catch (NameNotFoundException e) {
@@ -172,21 +172,23 @@ public class SurfacePolicy {
 //			e.printStackTrace();
 //		}
 //
-//		ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-//		List<ActivityManager.RunningAppProcessInfo> appProcessList = mActivityManager.getRunningAppProcesses();
-//		for (ActivityManager.RunningAppProcessInfo appProcess : appProcessList) {
-//			String processName = appProcess.processName;
-//			if (name.equals(processName)) {
-//				pid = appProcess.pid;
-//				break;
-//			}
-//		}
+		ActivityManager mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningAppProcessInfo> appProcessList = mActivityManager.getRunningAppProcesses();
+		for (ActivityManager.RunningAppProcessInfo appProcess : appProcessList) {
+			String processName = appProcess.processName;
+			if (processName.contains(name)) {
+				pid = appProcess.pid;
+				break;
+			}
+		}
 
 //		if (ai != null) {
-//			long cpuTime = Utils.getTotalCpuTime();
-//			long appTime = Utils.getAppCpuTime(pid);
-			long cpuTime = 500;
-			long appTime = 300;
+		Log.d("TTT", "pid : " + pid);
+
+			long cpuTime = Utils.getTotalCpuTime();
+			long appTime = Utils.getAppCpuTime(pid);
+//			long cpuTime = 500;
+//			long appTime = 300;
 
 			String out = "";
 			if (Utils.isYoukuApp(name))           out = mYoukuPolicy.invokSurfaceDump();
@@ -201,7 +203,8 @@ public class SurfacePolicy {
 			else if (Utils.isUCBrowserApp(name))  out = mUCPlayerPolicy.invokSurfaceDump();
 			else if (Utils.isQQBrowserApp(name))  out = mQQBrowserPlayerPolicy.invokSurfaceDump();
 
-			mSurfacePolicyCallback.onSurfaceValuePerSecond(out);
+//			mSurfacePolicyCallback.onSurfaceValuePerSecond(out);
+			mSurfacePolicyCallback.onSurfaceValuePerSecond(" cpuTime = " + cpuTime + " \n appTime = " + appTime );
 
 			mCPUTotalTime = cpuTime;
 			mAPPTotalTime = appTime;
