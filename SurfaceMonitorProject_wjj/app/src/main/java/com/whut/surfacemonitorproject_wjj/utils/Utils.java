@@ -8,6 +8,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,6 +17,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 //import android.os.ServiceManager;
 
@@ -511,4 +514,60 @@ public class Utils {
 		}
 		return true;
 	}
+
+	/**
+	 * 检测当前已经安装的支持的视频播放应用
+	 */
+	public static void showInstalledVideoApps(Context context){
+		String[] illegalPackageNames = new String[] {
+				"com.qihoo360.mobilesafe", "com.qihoo.antivirus",
+				"com.qihoo.security", "com.qihoo.appstore", "com.cleanmaster.security", "com.cleanmaster.mguard",
+				"com.cleanmaster.mguard_cn",
+				"com.wandoujia.phoenix2", // 豌豆荚
+				"com.tencent.android.qqdownloader", // QQ应用宝
+				"com.ksmobile.launcher", "com.cm.launcher" };
+
+		String[] trafficVideoApps = new String[]{
+				"com.hunantv.imgo.activity"
+				,"com.storm.smart"
+				,"com.youku.phone"
+				,"com.tudou.android"
+				,"com.tencent.qqlive"
+				,"com.letv.android.client"
+				,"com.sohu.sohuvideo"
+				,"com.qiyi.video"
+				,"com.qiyi.video.pad"
+				,"com.android.browser"
+				,"com.UCMobile"
+				,"com.tencent.mtt"
+				,"com.apusapps.browser"
+		};
+		HashMap<String,String> appNameMap = new HashMap<>();
+		appNameMap.put(trafficVideoApps[0],"芒果TV");
+		appNameMap.put(trafficVideoApps[1],"暴风影音");
+		appNameMap.put(trafficVideoApps[2],"优酷");
+		appNameMap.put(trafficVideoApps[3],"土豆");
+		appNameMap.put(trafficVideoApps[4],"腾讯视频");
+		appNameMap.put(trafficVideoApps[5],"乐视TV");
+		appNameMap.put(trafficVideoApps[6],"搜狐视频");
+		appNameMap.put(trafficVideoApps[7],"爱奇艺");
+		appNameMap.put(trafficVideoApps[12],"Apus Browser");
+
+		ArrayList<String> installedVideoAppList = new ArrayList<>();
+		for (String packageName : trafficVideoApps) {
+			if (PackageUtil.isInstalled(context, packageName)) {
+				// 构造一个崩溃
+//				throw new OutOfMemoryError("Illegal package[" + packageName + "] detected!");
+				if(appNameMap.get(packageName) != null){
+					installedVideoAppList.add(appNameMap.get(packageName));
+				}else{
+					installedVideoAppList.add(packageName);
+				}
+			}
+		}
+		//获取已经安装的应用
+		Toast.makeText(context,"本机已安装支持的视频应用 ：" + installedVideoAppList.toString(),Toast.LENGTH_LONG).show();
+	}
+
+
 }
