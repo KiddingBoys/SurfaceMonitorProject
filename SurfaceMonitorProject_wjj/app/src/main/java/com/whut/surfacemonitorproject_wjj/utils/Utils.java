@@ -136,6 +136,11 @@ public class Utils {
 		if (name.contains("com.tencent.mtt")) return true;
 		return false;
 	}
+
+	public static boolean isApusBrowserApp(String name) {
+		if (name.contains("com.apusapps.browser")) return true;
+		return false;
+	}
 	/***********************END 判断当前是哪个应用***************************/
 
 

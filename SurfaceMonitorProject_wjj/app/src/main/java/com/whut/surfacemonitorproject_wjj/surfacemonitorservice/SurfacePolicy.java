@@ -4,11 +4,11 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.whut.surfacemonitorproject_wjj.policy.browser.ApusBrowserPlayerPolicy;
 import com.whut.surfacemonitorproject_wjj.policy.browser.BrowserPlayerPolicy;
 import com.whut.surfacemonitorproject_wjj.policy.browser.QQBrowserPlayerPolicy;
 import com.whut.surfacemonitorproject_wjj.policy.browser.UCPlayerPolicy;
@@ -20,7 +20,6 @@ import com.whut.surfacemonitorproject_wjj.policy.player.QQlivePolicy;
 import com.whut.surfacemonitorproject_wjj.policy.player.SohuVideoPolicy;
 import com.whut.surfacemonitorproject_wjj.policy.player.TudouPolicy;
 import com.whut.surfacemonitorproject_wjj.policy.player.YoukuPolicy;
-import com.whut.surfacemonitorproject_wjj.utils.MyConstants;
 import com.whut.surfacemonitorproject_wjj.utils.Utils;
 
 import java.util.List;
@@ -59,6 +58,7 @@ public class SurfacePolicy {
 	private BrowserPlayerPolicy mBrowserPlayerPolicy = null;
 	private UCPlayerPolicy mUCPlayerPolicy = null;
 	private QQBrowserPlayerPolicy mQQBrowserPlayerPolicy = null;
+	private ApusBrowserPlayerPolicy mApusBrowserPlayerPolicy = null;
 
 	public SurfacePolicy(Context context, SurfacePolicyCallback callback) {
 		this.mContext = context;
@@ -154,6 +154,14 @@ public class SurfacePolicy {
 				return false;
 			}
 		});
+		mApusBrowserPlayerPolicy = new ApusBrowserPlayerPolicy(this.mContext, new PlayerPolicy.SurfaceEvent() {
+			@Override
+			public boolean onLowSurfaceVideo() {
+				// TODO Auto-generated method stub
+				mSurfacePolicyCallback.onLowSurfaceVideo();
+				return false;
+			}
+		});
 		/************************END 实例化具体的policy*****************************/
 	}
 
@@ -202,6 +210,7 @@ public class SurfacePolicy {
 			else if (Utils.isAndroidBrowserApp(name)) out = mBrowserPlayerPolicy.invokSurfaceDump();
 			else if (Utils.isUCBrowserApp(name))  out = mUCPlayerPolicy.invokSurfaceDump();
 			else if (Utils.isQQBrowserApp(name))  out = mQQBrowserPlayerPolicy.invokSurfaceDump();
+			else if (Utils.isApusBrowserApp(name))  out = mApusBrowserPlayerPolicy.invokSurfaceDump();
 
 //			mSurfacePolicyCallback.onSurfaceValuePerSecond(out);
 			mSurfacePolicyCallback.onSurfaceValuePerSecond(" cpuTime = " + cpuTime + " \n appTime = " + appTime );
@@ -223,5 +232,6 @@ public class SurfacePolicy {
 		mBrowserPlayerPolicy.resetAll();
 		mUCPlayerPolicy.resetAll();
 		mQQBrowserPlayerPolicy.resetAll();
+		mApusBrowserPlayerPolicy.resetAll();
 	}
 }
