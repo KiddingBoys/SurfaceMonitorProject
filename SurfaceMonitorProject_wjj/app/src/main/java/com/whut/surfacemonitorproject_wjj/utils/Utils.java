@@ -1,6 +1,8 @@
 package com.whut.surfacemonitorproject_wjj.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
 import android.net.wifi.ScanResult;
@@ -19,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 //import android.os.ServiceManager;
 
@@ -569,5 +572,34 @@ public class Utils {
 		Toast.makeText(context,"本机已安装支持的视频应用 ：" + installedVideoAppList.toString(),Toast.LENGTH_LONG).show();
 	}
 
+	/**
+	 *	通过pid获取AppName
+	 */
+	private String getAppName(Context context, int pID) {
+		String processName = "";
+		ActivityManager am = (ActivityManager)context.getSystemService(context.ACTIVITY_SERVICE);
+		List l = am.getRunningAppProcesses();
+		Iterator i = l.iterator();
+		PackageManager pm = context.getPackageManager();
+		while(i.hasNext())
+		{
+			ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo)(i.next());
+			try
+			{
+				if(info.pid == pID)
+				{
+					CharSequence c = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
+					//Log.d("Process", "Id: "+ info.pid +" ProcessName: "+ info.processName +"  Label: "+c.toString());
+					//processName = c.toString();
+					processName = info.processName;
+				}
+			}
+			catch(Exception e)
+			{
+				//Log.d("Process", "Error>> :"+ e.toString());
+			}
+		}
+		return processName;
+	}
 
 }
