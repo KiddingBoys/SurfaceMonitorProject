@@ -199,8 +199,14 @@ public class Utils {
 	/**
 	 * 读取surfaceFlinger文件分析出分辨率信息
 	 * @return
+	 * 第一个SurfaceView开始
+	 * 包含activeBuffer， split(",")
+	 * 到layer结束
      */
-	public static String getSurfaceFlingerByFile(String filePath){
+	public static String getSurfaceFlingerByFile(){
+		String filePath = "sdcard/surfaceFlinger.txt";
+		String resultOut = "";
+		boolean isSurfaceViewMsg = false;
 		try {
 			String encoding = "GBK";
 			File file = new File(filePath);
@@ -210,18 +216,44 @@ public class Utils {
 				BufferedReader bufferedReader = new BufferedReader(read);
 				String lineTxt = null;
 				while ((lineTxt = bufferedReader.readLine()) != null) {
-//					if (!needVersion || versionKey.equals(lineTxt.substring(0,versionKey.length()))) {
+					if(lineTxt.contains("SurfaceView")){
+						Log.d(TAG, "getSurfaceFlingerByFile: contains(\"SurfaceView\")");
+						isSurfaceViewMsg = true;
+					}
+					if(isSurfaceViewMsg && lineTxt.contains("activeBuffer")){
+
+						String[] temp = lineTxt.trim().split(",");
+						if(temp.length < 2){ //  || !temp[1].contains("activeBuffer")?????
+							break;
+						}
+						//activeBuffer=[ 384x 216: 384,  4]
+						String activeBufferStr = temp[1].trim();
+						//取 [ 到 :
+						int first  = 0, sec = 0;
+						for (int i = 0 ; i < activeBufferStr.length(); i++){
+							if((activeBufferStr.charAt(i)) == '['){
+								first = i;
+							}
+							if((activeBufferStr.charAt(i)) == ':'){
+								sec = i;
+								break;
+							}
+						}
+						resultOut = activeBufferStr.substring(first+1,sec);
+						break;
+					}
+
 				}
 				read.close();
-				return "";
+				return resultOut;
 			} else {
-				System.out.println("找不到指定的文件");
+				Log.d(TAG, "getSurfaceFlingerByFile: 找不到指定的文件");
 			}
 		} catch (Exception e) {
-			System.out.println("读取文件内容出错");
+			Log.d(TAG, "getSurfaceFlingerByFile: 读取文件内容出错");
 			e.printStackTrace();
 		}
-		return null;
+		return resultOut;
 	}
 
 	private static double n1 = 0.0;

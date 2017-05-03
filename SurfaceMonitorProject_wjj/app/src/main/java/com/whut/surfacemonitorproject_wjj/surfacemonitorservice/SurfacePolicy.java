@@ -213,7 +213,7 @@ public class SurfacePolicy {
 			else if (Utils.isApusBrowserApp(name))  out = mApusBrowserPlayerPolicy.invokSurfaceDump();
 
 //			mSurfacePolicyCallback.onSurfaceValuePerSecond(out);
-			mSurfacePolicyCallback.onSurfaceValuePerSecond(" cpuTime = " + cpuTime + " \n appTime = " + appTime );
+			mSurfacePolicyCallback.onSurfaceValuePerSecond(out + "\n  cpuTime = " + cpuTime + " \n appTime = " + appTime );
 
 			mCPUTotalTime = cpuTime;
 			mAPPTotalTime = appTime;

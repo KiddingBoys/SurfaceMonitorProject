@@ -50,10 +50,14 @@ public class IQIYIPolicy extends PlayerPolicy {
 	@Override
 	public String invokSurfaceDump() {
 		// TODO Auto-generated method stub
-		String out = Utils.getSufaceFlinger("dumpsys SurfaceFlinger");
+//		String out = Utils.getSufaceFlinger("dumpsys SurfaceFlinger");
+		String out = Utils.getSurfaceFlingerByFile();
 		int score = Utils.getWifiEnvScore(this.mContext);
-		if (out != null) {
+		if (out != null && out.contains("x")) {
 			String[] res = out.split("x");
+			res[0] = res[0].trim();
+			res[1] = res[1].trim();
+
 			if (Utils.resIsChange(Double.parseDouble(res[0]), Double.parseDouble(res[1]))) {
 				resetAll();
 			}
