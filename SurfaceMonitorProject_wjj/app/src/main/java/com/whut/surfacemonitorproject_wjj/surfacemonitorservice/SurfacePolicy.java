@@ -198,22 +198,53 @@ public class SurfacePolicy {
 //			long cpuTime = 500;
 //			long appTime = 300;
 
+			String appNameShow = "";
+			name = Utils.getAppNameByPid(mContext,pid);
 			String out = "";
-			if (Utils.isYoukuApp(name))           out = mYoukuPolicy.invokSurfaceDump();
-			else if (Utils.isSohuVideoApp(name))  out = mSohuVideoPolicy.invokSurfaceDump();
-			else if (Utils.isTudouVideoApp(name)) out = mTudouPolicy.invokSurfaceDump();
-			else if (Utils.isQQliveApp(name))     out = mQQlivePolicy.invokSurfaceDump();
-			else if (Utils.isLetvClientApp(name)) out = mLetvClientPolicy.invokSurfaceDump();
-			else if (Utils.isMangguoTVApp(name))  out = mMangguoTVPolicy.invokSurfaceDump();
-			else if (Utils.isIQIYIHDApp(name))    out = mIQIYIPadPolicy.invokSurfaceDump();
-			else if (Utils.isIQIYIApp(name))      out = mIQIYIPolicy.invokSurfaceDump();
-			else if (Utils.isAndroidBrowserApp(name)) out = mBrowserPlayerPolicy.invokSurfaceDump();
-			else if (Utils.isUCBrowserApp(name))  out = mUCPlayerPolicy.invokSurfaceDump();
-			else if (Utils.isQQBrowserApp(name))  out = mQQBrowserPlayerPolicy.invokSurfaceDump();
-			else if (Utils.isApusBrowserApp(name))  out = mApusBrowserPlayerPolicy.invokSurfaceDump();
+			if (Utils.isMangguoTVApp(name)){
+				out = mMangguoTVPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[0];
+//			}else if (Utils.isBao(name)){
+//				out = mSohuVideoPolicy.invokSurfaceDump();
+//				appNameShow = Utils.appsNameZh[1];
+			}else if (Utils.isYoukuApp(name)){
+				out = mYoukuPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[2];
+			}else if (Utils.isTudouVideoApp(name)){
+				out = mTudouPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[3];
+			}else if (Utils.isQQliveApp(name)){
+				out = mQQlivePolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[4];
+			}else if (Utils.isLetvClientApp(name)){
+				out = mLetvClientPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[5];
+			}else if (Utils.isSohuVideoApp(name)){
+				out = mSohuVideoPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[6];
+			}else if (Utils.isIQIYIApp(name)){
+				out = mIQIYIPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[7];
+			}else if (Utils.isIQIYIHDApp(name)){
+				out = mIQIYIPadPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[8];
+			}else if (Utils.isAndroidBrowserApp(name)){
+				out = mBrowserPlayerPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[9];
+			}else if (Utils.isQQBrowserApp(name)){
+				out = mQQBrowserPlayerPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[10];
+			}else if (Utils.isApusBrowserApp(name)){
+				out = mApusBrowserPlayerPolicy.invokSurfaceDump();
+				appNameShow = Utils.appsNameZh[11];
+			}
 
 //			mSurfacePolicyCallback.onSurfaceValuePerSecond(out);
-			mSurfacePolicyCallback.onSurfaceValuePerSecond(out + "\n  cpuTime = " + cpuTime + " \n appTime = " + appTime );
+			mSurfacePolicyCallback.onSurfaceValuePerSecond("当前应用: " + appNameShow
+					+out + "\n cpuTime = " + cpuTime
+					+ " \n appTime = " + appTime
+					+ " \n AppName = " + Utils.getAppNameByPid(mContext,pid));
+
 
 			mCPUTotalTime = cpuTime;
 			mAPPTotalTime = appTime;

@@ -34,6 +34,10 @@ public class Utils {
 	private static Object sMultiWinService;
     private static Method sGetMWMaintainedMethod = null;
 
+	public static String[] appsNameZh = {"芒果TV", "暴风影音", "优酷", "土豆", "腾讯视频"
+			, "乐视TV", "搜狐视频", "爱奇艺", "爱奇艺Pad"
+			, "系统自带浏览器", "UC浏览器", "爱奇艺", "Apus浏览器"};
+
 	/**
 	 * 获取总的CPU耗时
 	 * @return
@@ -577,16 +581,21 @@ public class Utils {
 				,"com.tencent.mtt"
 				,"com.apusapps.browser"
 		};
+
 		HashMap<String,String> appNameMap = new HashMap<>();
-		appNameMap.put(trafficVideoApps[0],"芒果TV");
-		appNameMap.put(trafficVideoApps[1],"暴风影音");
-		appNameMap.put(trafficVideoApps[2],"优酷");
-		appNameMap.put(trafficVideoApps[3],"土豆");
-		appNameMap.put(trafficVideoApps[4],"腾讯视频");
-		appNameMap.put(trafficVideoApps[5],"乐视TV");
-		appNameMap.put(trafficVideoApps[6],"搜狐视频");
-		appNameMap.put(trafficVideoApps[7],"爱奇艺");
-		appNameMap.put(trafficVideoApps[12],"Apus Browser");
+		appNameMap.put(trafficVideoApps[0],appsNameZh[0]);
+		appNameMap.put(trafficVideoApps[1],appsNameZh[1]);
+		appNameMap.put(trafficVideoApps[2],appsNameZh[2]);
+		appNameMap.put(trafficVideoApps[3],appsNameZh[3]);
+		appNameMap.put(trafficVideoApps[4],appsNameZh[4]);
+		appNameMap.put(trafficVideoApps[5],appsNameZh[5]);
+		appNameMap.put(trafficVideoApps[6],appsNameZh[6]);
+		appNameMap.put(trafficVideoApps[7],appsNameZh[7]);
+		appNameMap.put(trafficVideoApps[8],appsNameZh[8]);
+		appNameMap.put(trafficVideoApps[9],appsNameZh[9]);
+		appNameMap.put(trafficVideoApps[10],appsNameZh[10]);
+		appNameMap.put(trafficVideoApps[11],appsNameZh[11]);
+		appNameMap.put(trafficVideoApps[12],appsNameZh[12]);
 
 		ArrayList<String> installedVideoAppList = new ArrayList<>();
 		for (String packageName : trafficVideoApps) {
@@ -607,7 +616,7 @@ public class Utils {
 	/**
 	 *	通过pid获取AppName
 	 */
-	private String getAppName(Context context, int pID) {
+	public static String getAppNameByPid(Context context, int pID) {
 		String processName = "";
 		ActivityManager am = (ActivityManager)context.getSystemService(context.ACTIVITY_SERVICE);
 		List l = am.getRunningAppProcesses();

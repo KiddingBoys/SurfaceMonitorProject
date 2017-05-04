@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.whut.surfacemonitorproject_wjj.surfacemonitorservice.SurfaceMonitorService;
+import com.whut.surfacemonitorproject_wjj.utils.Utils;
 import com.whut.surfaceproject_wjj.R;
 
 public class MainActivity extends Activity {
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 mContext.startService(new Intent(mContext, SurfaceMonitorService.class));
+                Utils.showInstalledVideoApps(mContext);
             }
         });
     }
